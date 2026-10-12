@@ -1,6 +1,6 @@
 // Minimal service worker: lets TableBill be installed as an app and keeps the shell fast.
-const CACHE = 'tablebill-shell-v2';
-const SHELL = ['/style.css', '/core.js', '/ui.js', '/boot.js'];
+const CACHE = 'tablebill-shell-v3';
+const SHELL = ['/static/css/style.css', '/static/js/core.js', '/static/js/ui.js', '/static/js/boot.js'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => { })); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== CACHE).map(x => caches.delete(x))))); self.clients.claim(); });
 self.addEventListener('fetch', e => {

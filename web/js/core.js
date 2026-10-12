@@ -233,7 +233,7 @@ async function printHTML(html, opt = {}) {
   const body = parts.map(p => `<div class="slip">${p}</div>`).join('');
   doc.open();
   doc.write(`<!doctype html><html><head><meta charset="utf-8"><title>${attr(S.cfg.restaurant || 'Print')}</title>
-    ${roll ? '' : '<link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/theme.css">'}
+    ${roll ? '' : '<link rel="stylesheet" href="/static/css/style.css"><link rel="stylesheet" href="/static/css/theme.css">'}
     <style id="ps">@page{size:${roll ? width + 'mm 200mm' : paper};margin:${roll ? '0' : (opt.margin || '12mm')}}${PRINT_CSS}
     body{${roll ? `width:${width - pad * 2}mm;padding:${pad}mm` : 'padding:0'};box-sizing:content-box}
     .slip{${roll ? '' : ''}page-break-after:always;break-after:page}.slip:last-child{page-break-after:auto;break-after:auto}
