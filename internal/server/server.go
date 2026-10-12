@@ -117,9 +117,18 @@ func (s *Server) routes() http.Handler {
 		w.Header().Set("Service-Worker-Allowed", "/")
 		s.static.serve(w, r, "assets/sw.js", "no-cache")
 	})
-	mux.HandleFunc("GET /icon.svg", func(w http.ResponseWriter, r *http.Request) {
-		s.static.serve(w, r, "assets/icon.svg", "public, max-age=86400")
-	})
+	// brand icons live at the site root because browsers, phones and search engines look for them there
+	for url, file := range map[string]string{
+		"/icon.svg":              "assets/icon.svg",
+		"/favicon.ico":           "assets/favicon.ico",
+		"/apple-touch-icon.png":  "assets/apple-touch-icon.png",
+		"/icon-192.png":          "assets/icon-192.png",
+		"/icon-512.png":          "assets/icon-512.png",
+		"/icon-maskable-512.png": "assets/icon-maskable-512.png",
+	} {
+		file := file
+		mux.HandleFunc("GET "+url, func(w http.ResponseWriter, r *http.Request) { s.static.serve(w, r, file, "public, max-age=86400") })
+	}
 
 	mux.HandleFunc("/", s.notFound)
 	return mux

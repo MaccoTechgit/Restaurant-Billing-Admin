@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Track your order</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#f97316">
 <link rel="stylesheet" href="/static/css/style.css">
 <link rel="stylesheet" href="/static/css/theme.css">
 </head>
@@ -19,7 +23,7 @@ async function load(){
   if(!r.ok){$('app').innerHTML='<div class="empty">'+esc(d.error||'Not found')+'</div>';return}
   const st=d.status==='accepted'?'assigned':d.status; const at=steps.findIndex(s=>s[0]===st);
   const late=['failed','cancelled'].includes(d.status);
-  $('app').innerHTML=`<div class="brand"><span class="logo">🍴</span>${esc(d.restaurant)}</div><h2 style="margin-top:14px">Order ${esc(d.order)}</h2><p class="muted">Delivering to ${esc(d.address)}</p>
+  $('app').innerHTML=`<div class="brand"><span class="logo"><img src="/icon.svg" alt=""></span>${esc(d.restaurant)}</div><h2 style="margin-top:14px">Order ${esc(d.order)}</h2><p class="muted">Delivering to ${esc(d.address)}</p>
   ${late?`<div class="err">This delivery is ${esc(d.status)}. Please contact the restaurant.</div>`:`<div style="margin:16px 0">${steps.map((s,i)=>`<div class="check ${i<=at?'done':''}"><i>${i<=at?'✓':i+1}</i><b>${s[1]}</b></div>`).join('')}</div>`}
   ${d.driver?`<div class="card" style="background:var(--bg)"><b>🛵 ${esc(d.driver.name)}</b> is bringing your order<br><a class="btn sm" href="tel:${esc(d.driver.phone)}" style="margin-top:6px">📞 Call rider</a></div>`:''}
   ${d.eta_by&&!late&&d.status!=='delivered'?`<p class="muted">Expected by ${new Date(d.eta_by*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</p>`:''}`;

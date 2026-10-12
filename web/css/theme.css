@@ -276,3 +276,7 @@ body.noprint .pbtn{display:none!important}
 
 kbd{font-family:ui-monospace,Consolas,monospace;font-size:12px;padding:2px 8px;border-radius:7px;background:rgba(15,23,42,.08);border:1px solid rgba(15,23,42,.18);border-bottom-width:2px;white-space:nowrap}
 [data-theme=dark] kbd{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25)}
+
+/* default MacBill mark: the image already contains the orange tile */
+.logo.mark,.rail .logo.mark,.login-hero .logo.mark{background:none!important;box-shadow:none!important}
+.logo.mark img{object-fit:contain}

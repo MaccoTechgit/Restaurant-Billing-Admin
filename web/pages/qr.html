@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Order from your table</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#f97316">
 <link rel="stylesheet" href="/static/css/style.css">
 <link rel="stylesheet" href="/static/css/theme.css">
 <style>
@@ -40,7 +44,7 @@ async function init(){
 function total(){return cart.reduce((a,l)=>a+l.unit*l.qty,0)}
 function draw(){
   const m=D.menu,cats=m.categories;
-  $('#app').innerHTML=`<div class="hd"><div class="lg">${D.logo&&/^(\/media\/|https?:\/\/)/i.test(D.logo)?`<img src="${esc(D.logo)}" alt="">`:'🍴'}</div><h1>${esc(D.restaurant)}</h1>${D.tagline?`<p>${esc(D.tagline)}</p>`:''}<div class="pill">${esc(D.branch)} · Table ${esc(D.table)}</div><p style="margin-top:8px;font-size:13px">${esc(D.welcome)}</p></div>
+  $('#app').innerHTML=`<div class="hd"><div class="lg">${D.logo&&/^(\/media\/|https?:\/\/)/i.test(D.logo)?`<img src="${esc(D.logo)}" alt="">`:'<img src="/icon.svg" alt="">'}</div><h1>${esc(D.restaurant)}</h1>${D.tagline?`<p>${esc(D.tagline)}</p>`:''}<div class="pill">${esc(D.branch)} · Table ${esc(D.table)}</div><p style="margin-top:8px;font-size:13px">${esc(D.welcome)}</p></div>
    ${placed?'<div id="trk"></div>':''}
    <div class="tabs" style="overflow:auto;flex-wrap:nowrap;padding:4px 0"><button class="tab ${!cat?'on':''}" data-c="0">All</button>${cats.map(c=>`<button class="tab ${cat===c.id?'on':''}" data-c="${c.id}" style="flex:none">${c.emoji||''} ${esc(c.name)}</button>`).join('')}</div>
    <div class="card" style="padding:4px 14px;margin-top:8px">${m.products.filter(p=>p.available&&(!cat||p.category===cat)).map(p=>`<div class="it"><div class="e">${p.image?`<img src="${esc(p.image)}" style="width:44px;height:44px;border-radius:8px;object-fit:cover">`:(p.emoji||'🍽')}</div><div class="m"><b>${esc(p.name)}</b><br><small>${esc(p.desc||'')}</small><div style="font-weight:800;color:var(--pri-d)">${money(p.price)}</div></div><button class="btn pri sm" data-p="${p.id}">Add</button></div>`).join('')||'<div class="empty">Nothing here</div>'}</div>

@@ -221,3 +221,18 @@ func TestExistingRequestIDIsKept(t *testing.T) {
 		t.Fatal("request id from the load balancer should be kept")
 	}
 }
+
+func TestBrandIconsAreServedFromTheRoot(t *testing.T) {
+	f, _ := newTestServer(t, okBackend())
+	for path, ctype := range map[string]string{"/icon.svg": "image/svg+xml", "/favicon.ico": "image/x-icon", "/apple-touch-icon.png": "image/png", "/icon-192.png": "image/png", "/icon-512.png": "image/png", "/icon-maskable-512.png": "image/png"} {
+		resp, body := get(t, f.URL+path)
+		if resp.StatusCode != 200 || resp.Header.Get("Content-Type") != ctype || len(body) < 200 {
+			t.Errorf("%s: %d %q (%d bytes)", path, resp.StatusCode, resp.Header.Get("Content-Type"), len(body))
+		}
+	}
+	for _, p := range []string{"/login", "/app", "/qr", "/track", "/display"} {
+		if _, body := get(t, f.URL+p); !strings.Contains(body, `href="/favicon.ico"`) || !strings.Contains(body, `rel="apple-touch-icon"`) {
+			t.Errorf("%s has no favicon links", p)
+		}
+	}
+}

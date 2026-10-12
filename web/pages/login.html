@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign in | TableBill</title>
+<title>Sign in | MacBill System</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#f97316">
 <link rel="stylesheet" href="/static/css/style.css">
 <link rel="stylesheet" href="/static/css/theme.css">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -11,14 +15,14 @@
 <body>
 <div class="login-wrap">
   <section class="login-hero">
-    <div class="brand"><span class="logo" id="logo2">🍴</span> <span id="appname2">TableBill</span></div>
+    <div class="brand"><span class="logo mark" id="logo2"><img src="/icon.svg" alt=""></span> <span id="appname2">MacBill System</span></div>
     <h2>Run your whole restaurant from one screen.</h2>
     <p>Billing, kitchen, inventory, staff, accounts and delivery - fast, simple and always in sync.</p>
     <ul><li><i>⚡</i> Lightning-fast POS with live kitchen display</li><li><i>📊</i> Real-time sales, stock and profit</li><li><i>🔒</i> Role-based access for every team member</li></ul>
   </section>
   <section class="login-side">
   <div class="login-card">
-    <div class="brand c"><span class="logo" id="logo">🍴</span> <span id="appname">TableBill</span></div>
+    <div class="brand c"><span class="logo mark" id="logo"><img src="/icon.svg" alt=""></span> <span id="appname">MacBill System</span></div>
 
     <!-- sign in -->
     <form id="f" autocomplete="on">
@@ -90,7 +94,7 @@ function show(id,msg){const e=$(id);e.textContent=msg;e.classList.remove('hide')
 function panel(n){['f','f2','f3','f4'].forEach(x=>$(x).classList.toggle('hide',x!==n))}
 
 fetch('/api/config').then(r=>r.json()).then(c=>{
-  $('appname').textContent=c.restaurant||'TableBill';$('appname2').textContent=c.restaurant||'TableBill'; document.title='Sign in | '+(c.restaurant||'TableBill');
+  $('appname').textContent=c.restaurant||'MacBill System';$('appname2').textContent=c.restaurant||'MacBill System'; document.title='Sign in | '+(c.restaurant||'MacBill System');
   if(c.color) document.documentElement.style.setProperty('--pri',c.color);
   if(c.logo&&/^(\/media\/|https?:\/\/)/i.test(c.logo)){const im=document.createElement('img');im.src=c.logo;$('logo').replaceChildren(im);$('logo2').replaceChildren(im.cloneNode())}
   if(!c.recovery) $('forgot').classList.add('hide');

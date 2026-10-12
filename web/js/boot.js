@@ -4,7 +4,7 @@
 function applyBrand() {
   const c = S.cfg;
   if (c.color) document.documentElement.style.setProperty('--pri', c.color);
-  document.title = (c.restaurant || 'TableBill');
+  document.title = (c.restaurant || 'MacBill System');
 }
 function applyTheme() {
   let th = localStorage.theme || S.cfg.dark || 'auto';
@@ -29,7 +29,7 @@ function railOf(target) {
 }
 
 function buildRail(active) {
-  $('#rail').innerHTML = `<div class="logo" title="${attr(S.cfg.restaurant || '')}">${safeUrl(S.cfg.logo) ? `<img src="${attr(safeUrl(S.cfg.logo))}">` : '🍴'}</div>` + S.schema.rails.map(r => {
+  $('#rail').innerHTML = `<div class="logo${safeUrl(S.cfg.logo) ? '' : ' mark'}" title="${attr(S.cfg.restaurant || '')}">${safeUrl(S.cfg.logo) ? `<img src="${attr(safeUrl(S.cfg.logo))}">` : '<img src="/icon.svg" alt="">'}</div>` + S.schema.rails.map(r => {
     const tg = firstTarget(r.items);
     return `<a href="#/${attr(tg)}" class="${r.key === active.key ? 'on' : ''}" title="${attr(r.title)}"><i>${r.icon}</i>${esc(t('rail.' + r.key, r.title))}</a>`;
   }).join('') + '<div class="sp"></div>';
@@ -76,7 +76,7 @@ async function route() {
   const el = $('#view'); el.className = ''; el.innerHTML = '<div class="empty">Loading…</div>';
   S.page = { target, params, refresh: null, events: (h && h.events) || [] };
   S.page.cleanup && S.page.cleanup();
-  document.title = t('nav.' + target, target) + ' | ' + (S.cfg.restaurant || 'TableBill');
+  document.title = t('nav.' + target, target) + ' | ' + (S.cfg.restaurant || 'MacBill System');
   if (!h) { el.innerHTML = `<div class="card empty">This screen (<b>${esc(target)}</b>) is not available.</div>`; return; }
   const pg = S.page;
   try { await h.render(el, pg); } catch (e) { if (S.page === pg) el.innerHTML = `<div class="err">${esc(e.message)}</div>`; console.error(e); }
@@ -93,7 +93,7 @@ function setupTop() {
     bs.classList.remove('hide'); bs.innerHTML = opt(S.me.branch_id, '🏪 ' + S.branchName(S.me.branch_id), true); bs.disabled = true;
   }
   $('#avatar').textContent = (S.me.name || '?').slice(0, 1).toUpperCase();
-  if (S.me.role === 'pos_operator') { document.body.classList.add('kiosk'); $('.top').insertAdjacentHTML('afterbegin', `<span class="brand"><span class="logo">${safeUrl(S.cfg.logo) ? `<img src="${attr(safeUrl(S.cfg.logo))}">` : '🍴'}</span>${esc(S.cfg.restaurant || '')}</span>`); }
+  if (S.me.role === 'pos_operator') { document.body.classList.add('kiosk'); $('.top').insertAdjacentHTML('afterbegin', `<span class="brand"><span class="logo${safeUrl(S.cfg.logo) ? '' : ' mark'}">${safeUrl(S.cfg.logo) ? `<img src="${attr(safeUrl(S.cfg.logo))}">` : '<img src="/icon.svg" alt="">'}</span>${esc(S.cfg.restaurant || '')}</span>`); }
   $('#supBtn').onclick = () => openSupport();
   if (localStorage.navHidden === '1') document.body.classList.add('nav-hidden');
   $('#burger').onclick = () => {
