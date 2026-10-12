@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Track your order</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/theme.css">
+</head>
+<body>
+<div style="max-width:520px;margin:0 auto;padding:16px"><div id="app" class="card"><div class="empty">Loading…</div></div></div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const C=new URLSearchParams(location.search).get('c')||'';
+const steps=[['pending','Order received'],['assigned','Rider assigned'],['picked_up','Picked up'],['on_the_way','On the way'],['delivered','Delivered']];
+async function load(){
+  const r=await fetch('/api/public/track?c='+encodeURIComponent(C));const d=await r.json();
+  if(!r.ok){$('app').innerHTML='<div class="empty">'+esc(d.error||'Not found')+'</div>';return}
+  const st=d.status==='accepted'?'assigned':d.status; const at=steps.findIndex(s=>s[0]===st);
+  const late=['failed','cancelled'].includes(d.status);
+  $('app').innerHTML=`<div class="brand"><span class="logo">🍴</span>${esc(d.restaurant)}</div><h2 style="margin-top:14px">Order ${esc(d.order)}</h2><p class="muted">Delivering to ${esc(d.address)}</p>
+  ${late?`<div class="err">This delivery is ${esc(d.status)}. Please contact the restaurant.</div>`:`<div style="margin:16px 0">${steps.map((s,i)=>`<div class="check ${i<=at?'done':''}"><i>${i<=at?'✓':i+1}</i><b>${s[1]}</b></div>`).join('')}</div>`}
+  ${d.driver?`<div class="card" style="background:var(--bg)"><b>🛵 ${esc(d.driver.name)}</b> is bringing your order<br><a class="btn sm" href="tel:${esc(d.driver.phone)}" style="margin-top:6px">📞 Call rider</a></div>`:''}
+  ${d.eta_by&&!late&&d.status!=='delivered'?`<p class="muted">Expected by ${new Date(d.eta_by*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</p>`:''}`;
+  if(!['delivered','failed','cancelled'].includes(d.status))setTimeout(load,10000);
+}
+load();
+</script>
+</body>
+</html>

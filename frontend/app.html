@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TableBill</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#f97316">
+</head>
+<body>
+<div class="shell" id="shell">
+  <nav class="rail" id="rail"></nav>
+  <aside class="side" id="side"><h2 id="sideTitle"></h2><div class="nav" id="nav"></div></aside>
+  <div class="main">
+    <header class="top">
+      <button class="iconbtn burger" id="burger" title="Menu">☰</button>
+      <span class="live off" id="live" title="Live updates"></span>
+      <select id="branchSel" class="hide" title="Branch"></select>
+      <span class="right"></span>
+      <button class="iconbtn" id="supBtn" title="Help & support - report a problem">🛟</button>
+      <button class="iconbtn" id="themeBtn" title="Light / dark">🌓</button>
+      <button class="iconbtn" id="fsBtn" title="Full screen">⛶</button>
+      <div style="position:relative"><button class="iconbtn" id="bell" title="Notifications">🔔<span class="badge hide" id="bellN">0</span></button><div class="pop hide" id="bellPop"></div></div>
+      <div style="position:relative"><div class="avatar" id="avatar" title="Account"></div><div class="pop hide" id="userPop"></div></div>
+    </header>
+    <div id="view"></div>
+  </div>
+</div>
+<div id="toast"></div>
+<div id="modal"></div>
+<div id="modal2"></div>
+<div id="printArea" class="printable"></div>
+<script src="/core.js"></script>
+<script src="/ui.js"></script>
+<script src="/pages_hub.js"></script>
+<script src="/pos.js"></script>
+<script src="/pages_hr.js"></script>
+<script src="/pages_acc.js"></script>
+<script src="/pages_delivery.js"></script>
+<script src="/pages_misc.js"></script>
+<script src="/boot.js"></script>
+</body>
+</html>

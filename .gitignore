@@ -1,0 +1,7 @@
+data/
+*.exe
+*.log
+
+website/
+start-website.bat
+.env

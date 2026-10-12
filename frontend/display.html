@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer display</title>
+<link rel="stylesheet" href="/style.css">
+<style>body{background:#0f172a;color:#fff}.w{max-width:900px;margin:0 auto;padding:30px}.l{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #334155;font-size:22px}.t{font-size:44px;font-weight:800;text-align:right;margin-top:20px}h1{font-size:34px}.idle{text-align:center;margin-top:20vh;font-size:30px;opacity:.85}</style>
+</head>
+<body><div class="w" id="a"><div class="idle">Welcome 👋</div></div>
+<script>
+const P=new URLSearchParams(location.search),R=P.get('r'),K=P.get('k');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let cur={symbol:'₹',position:'before'};
+fetch('/api/config').then(r=>r.json()).then(c=>{cur=c.currency||cur;if(c.color)document.documentElement.style.setProperty('--pri',c.color)});
+const money=v=>{const s=((v||0)/100).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});return cur.position==='after'?s+' '+cur.symbol:cur.symbol+s};
+async function tick(){
+  try{const r=await fetch('/api/display?r='+R+'&k='+K);const d=await r.json();
+    if(!r.ok){document.getElementById('a').innerHTML='<div class="idle">'+esc(d.error)+'</div>';return}
+    const c=d.state&&d.state.cart&&d.state.at&&(Date.now()/1000-d.state.at<600)?d.state.cart:null;
+    document.getElementById('a').innerHTML=c&&c.items&&c.items.length?`<h1>${esc(d.name)}</h1>${c.customer?'<p>Hello, '+esc(c.customer)+'</p>':''}${c.items.map(i=>`<div class="l"><span>${i.qty} × ${esc(i.name)}${i.label?'<br><small style="opacity:.6;font-size:15px">'+esc(i.label)+'</small>':''}</span><b>${money(i.total)}</b></div>`).join('')}${c.totals.disc?`<div class="l"><span>Discount</span><b>-${money(c.totals.disc)}</b></div>`:''}<div class="l"><span>Tax</span><b>${money(c.totals.tax)}</b></div><div class="t">Total ${money(c.totals.total)}</div>`:`<div class="idle"><h1>${esc(d.name)}</h1>Thank you for visiting! 🙏</div>`;
+  }catch(e){}
+  setTimeout(tick,1500);
+}
+tick();
+</script></body></html>

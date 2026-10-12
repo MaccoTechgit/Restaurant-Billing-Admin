@@ -1,0 +1,278 @@
+/* =====================================================================
+   theme.css - "Aurora glass" look. Loaded after style.css and overrides it.
+   ===================================================================== */
+:root{
+  --pri:#f97316; --pri2:#fb923c; --pri-d:#c2570c; --pri-l:rgba(249,115,22,.12);
+  --ink:#0f172a; --mut:#64748b; --line:rgba(148,163,184,.30); --bg:#eef1f8;
+  --card:rgba(255,255,255,.66); --card-solid:#fff; --side:rgba(255,255,255,.55);
+  --glass-border:rgba(255,255,255,.75); --blur:blur(16px) saturate(170%);
+  --shadow:0 8px 30px rgba(31,41,80,.08), 0 1px 2px rgba(31,41,80,.06);
+  --r:18px;
+  --rail:linear-gradient(180deg,#171a2e 0%,#1d2140 55%,#2a1f3d 100%);
+}
+[data-theme=dark]{
+  --ink:#e8ecf4; --mut:#98a2b8; --line:rgba(148,163,184,.18); --bg:#0b0e18;
+  --card:rgba(26,31,50,.62); --card-solid:#1a1f32; --side:rgba(18,22,38,.62); --glass-border:rgba(255,255,255,.07);
+  --shadow:0 10px 34px rgba(0,0,0,.45); --pri-l:rgba(249,115,22,.16);
+  --rail:linear-gradient(180deg,#090b14 0%,#10132a 60%,#1a1230 100%);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,"Segoe UI Variable","Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
+  letter-spacing:-.005em;color:var(--ink);
+  background:
+    radial-gradient(900px 520px at 6% -8%,rgba(249,115,22,.26),transparent 62%),
+    radial-gradient(800px 520px at 100% 0%,rgba(99,102,241,.24),transparent 58%),
+    radial-gradient(760px 520px at 62% 112%,rgba(20,184,166,.20),transparent 58%),
+    var(--bg);
+  background-attachment:fixed;
+}
+[data-theme=dark] body{background:
+    radial-gradient(900px 520px at 6% -8%,rgba(249,115,22,.16),transparent 62%),
+    radial-gradient(800px 520px at 100% 0%,rgba(99,102,241,.18),transparent 58%),
+    radial-gradient(760px 520px at 62% 112%,rgba(20,184,166,.10),transparent 58%),var(--bg);background-attachment:fixed}
+h1{font-weight:800;letter-spacing:-.025em}h2,h3{letter-spacing:-.015em}
+
+/* ---------- glass surfaces ---------- */
+.card,.tw,.pos>section,.pop,.board .col,.lines,.multi{
+  background:var(--card);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:1px solid var(--glass-border);box-shadow:var(--shadow);
+}
+.card{transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{box-shadow:0 14px 40px rgba(31,41,80,.12)}
+.top{background:var(--side);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-bottom:1px solid var(--glass-border);padding:10px 20px}
+.side{background:var(--side);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-right:1px solid var(--glass-border)}
+.modal{background:rgba(15,23,42,.38);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);animation:fade .18s ease}
+.modal .box{background:var(--card-solid);background:rgba(255,255,255,.82);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:22px;box-shadow:0 30px 80px rgba(15,23,42,.35);animation:pop .22s cubic-bezier(.2,.9,.3,1.2)}
+[data-theme=dark] .modal .box{background:rgba(24,29,48,.88)}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+#view>*{animation:rise .35s ease both}
+#view .wgrid>*,#view .grid>*{animation:rise .4s ease both}
+#view .wgrid>*:nth-child(2){animation-delay:.04s}#view .wgrid>*:nth-child(3){animation-delay:.08s}#view .wgrid>*:nth-child(4){animation-delay:.12s}#view .wgrid>*:nth-child(5){animation-delay:.16s}
+
+/* ---------- navigation rail ---------- */
+.rail{background:var(--rail);box-shadow:4px 0 30px rgba(15,18,40,.25);padding:14px 0}
+.rail .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#fb923c,#ea580c);box-shadow:0 8px 20px rgba(249,115,22,.5);font-size:21px;margin-bottom:16px}
+.rail a{width:58px;border-radius:15px;color:#a9b0cf;transition:.18s}
+.rail a:hover{background:rgba(255,255,255,.09);color:#fff;transform:translateY(-1px)}
+.rail a.on{background:linear-gradient(135deg,#fb923c,#ea580c);color:#fff;box-shadow:0 8px 20px rgba(249,115,22,.45)}
+.side h2{font-size:18px;font-weight:800;padding:6px 10px 12px}
+.nav a{border-radius:11px;transition:.15s}
+.nav a:hover{background:rgba(255,255,255,.6);transform:translateX(2px)}
+[data-theme=dark] .nav a:hover{background:rgba(255,255,255,.07)}
+.nav a.on{background:linear-gradient(135deg,rgba(249,115,22,.18),rgba(249,115,22,.06));color:var(--pri-d);box-shadow:inset 3px 0 0 var(--pri)}
+[data-theme=dark] .nav a.on{color:#fdba74}
+
+/* ---------- buttons & inputs ---------- */
+.btn{border-radius:12px;background:rgba(255,255,255,.7);border:1px solid var(--line);color:var(--ink);box-shadow:0 1px 2px rgba(31,41,80,.05);padding:9px 15px;transition:transform .12s ease,box-shadow .15s ease,border-color .15s}
+.btn:hover{border-color:var(--pri);color:var(--pri-d);transform:translateY(-1px);box-shadow:0 6px 16px rgba(31,41,80,.10)}
+.btn:active{transform:translateY(0) scale(.98)}
+[data-theme=dark] .btn{background:rgba(255,255,255,.07);color:var(--ink)}
+.btn.pri{background:linear-gradient(135deg,#fb923c,#ea580c);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(234,88,12,.35)}
+.btn.pri:hover{filter:brightness(1.06);color:#fff;box-shadow:0 12px 26px rgba(234,88,12,.45)}
+.btn.ok{background:linear-gradient(135deg,#22c55e,#15803d);border-color:transparent;box-shadow:0 8px 20px rgba(21,128,61,.3)}
+.btn.bad.solid{background:linear-gradient(135deg,#ef4444,#b91c1c);border-color:transparent;box-shadow:0 8px 20px rgba(185,28,28,.3)}
+.btn.lg{padding:13px 20px;font-size:15.5px;border-radius:14px}
+.btn.sm{border-radius:9px}
+input,select,textarea{background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:12px;padding:10px 12px;transition:border-color .15s,box-shadow .15s,background .15s}
+[data-theme=dark] input,[data-theme=dark] select,[data-theme=dark] textarea{background:rgba(255,255,255,.06);color:var(--ink)}
+input:focus,select:focus,textarea:focus{background:#fff;border-color:var(--pri);box-shadow:0 0 0 4px rgba(249,115,22,.16)}
+[data-theme=dark] input:focus,[data-theme=dark] select:focus,[data-theme=dark] textarea:focus{background:rgba(255,255,255,.1)}
+.iconbtn{border-radius:12px;background:rgba(255,255,255,.6);border:1px solid var(--glass-border);box-shadow:0 1px 3px rgba(31,41,80,.08)}
+[data-theme=dark] .iconbtn{background:rgba(255,255,255,.07)}
+.avatar{background:linear-gradient(135deg,#fb923c,#db2777);box-shadow:0 6px 16px rgba(219,39,119,.35)}
+.tab{border-radius:99px;background:rgba(255,255,255,.6);transition:.15s;border-color:var(--glass-border)}
+.tab:hover{border-color:var(--pri)}
+.tab.on{background:linear-gradient(135deg,#fb923c,#ea580c);border-color:transparent;box-shadow:0 6px 16px rgba(234,88,12,.35)}
+[data-theme=dark] .tab{background:rgba(255,255,255,.06)}
+
+/* ---------- tables ---------- */
+.tw{overflow:auto;border-radius:var(--r)}
+.t th{background:rgba(148,163,184,.14);color:var(--mut);font-size:11px;letter-spacing:.06em}
+.t td{border-bottom:1px solid var(--line)}
+.t tr.click:hover td{background:var(--pri-l)}
+.t tfoot td{background:rgba(148,163,184,.14)}
+.chip{padding:3px 10px;font-weight:700;letter-spacing:.01em}
+
+/* ---------- stat cards / widgets ---------- */
+.card.stat{position:relative;overflow:hidden;border-top:1px solid var(--glass-border)}
+.card.stat::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(180deg,#fb923c,#ea580c)}
+.card.stat::after{content:"";position:absolute;right:-26px;top:-26px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.22),transparent 70%)}
+.card.stat.t2::before{background:linear-gradient(180deg,#2dd4bf,#0f766e)}.card.stat.t2::after{background:radial-gradient(circle,rgba(20,184,166,.22),transparent 70%)}
+.card.stat.t3::before{background:linear-gradient(180deg,#f87171,#b91c1c)}.card.stat.t3::after{background:radial-gradient(circle,rgba(239,68,68,.2),transparent 70%)}
+.card.stat.t4::before{background:linear-gradient(180deg,#60a5fa,#1d4ed8)}.card.stat.t4::after{background:radial-gradient(circle,rgba(59,130,246,.22),transparent 70%)}
+.card.stat.t5::before{background:linear-gradient(180deg,#a78bfa,#6d28d9)}.card.stat.t5::after{background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%)}
+.stat{border-color:transparent}
+.stat .v{font-size:27px;font-weight:800;letter-spacing:-.03em}
+.bars>div{background:linear-gradient(180deg,#fb923c,#ea580c);border-radius:7px 7px 0 0}
+.hbar .tr{height:9px;background:rgba(148,163,184,.2)}.hbar .tr i{background:linear-gradient(90deg,#fb923c,#ea580c)}
+.page-h h1{font-size:25px}
+.page-h{margin-bottom:18px}
+
+/* ---------- POS ---------- */
+.prod{background:rgba(255,255,255,.7);border-radius:16px;transition:transform .15s,box-shadow .15s,border-color .15s}
+[data-theme=dark] .prod{background:rgba(255,255,255,.05)}
+.prod:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(234,88,12,.18);border-color:var(--pri);background:#fff}
+[data-theme=dark] .prod:hover{background:rgba(255,255,255,.1)}
+.prod:active{transform:scale(.97)}
+.prod .em{font-size:30px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+.tbl{border-radius:16px;background:rgba(255,255,255,.6);transition:.15s;border-width:2px}
+.tbl:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(31,41,80,.12)}
+.chans button{border-radius:11px;background:rgba(255,255,255,.65);transition:.15s}
+.chans button.on{background:linear-gradient(135deg,#fb923c,#ea580c);color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(234,88,12,.35)}
+.sum .t{font-size:24px;letter-spacing:-.02em}
+.printopts{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:13px;font-weight:600;color:var(--mut)}
+.printopts label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.tk{border-radius:16px}
+.paym button{border-radius:12px;background:rgba(255,255,255,.7);transition:.15s}
+.paym button:hover{border-color:var(--pri);transform:translateY(-1px)}
+
+/* ---------- operator / kiosk mode ---------- */
+.kiosk .shell{grid-template-columns:1fr!important}
+.kiosk .rail,.kiosk .side,.kiosk #burger,.kiosk #branchSel{display:none!important}
+.kiosk .top .brand{font-size:19px}
+.kiosk #view{padding:14px 18px}
+.kiosk .pos{height:calc(100vh - 128px)}
+.kiosk .pos .printopts{font-size:14px}
+
+/* ---------- login ---------- */
+.login-wrap{display:grid;grid-template-columns:1.05fr 1fr;padding:0;background:none;place-items:stretch;min-height:100vh}
+.login-hero{position:relative;overflow:hidden;color:#fff;padding:56px 54px;display:flex;flex-direction:column;justify-content:center;
+  background:radial-gradient(700px 500px at 20% 10%,rgba(251,146,60,.65),transparent 60%),radial-gradient(600px 500px at 90% 90%,rgba(99,102,241,.7),transparent 60%),linear-gradient(135deg,#1b1740,#2b1850 55%,#4a1d4f)}
+.login-hero::before,.login-hero::after{content:"";position:absolute;border-radius:50%;filter:blur(2px);opacity:.5}
+.login-hero::before{width:380px;height:380px;right:-120px;top:-100px;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 68%)}
+.login-hero::after{width:300px;height:300px;left:-90px;bottom:-90px;background:radial-gradient(circle,rgba(251,146,60,.5),transparent 68%)}
+.login-hero .brand{font-size:26px;color:#fff}.login-hero .logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#fb923c,#ea580c);box-shadow:0 10px 28px rgba(234,88,12,.55)}
+.login-hero h2{font-size:40px;line-height:1.1;margin:34px 0 14px;font-weight:800;letter-spacing:-.03em;position:relative}
+.login-hero p{opacity:.85;font-size:16px;max-width:430px;position:relative}
+.login-hero ul{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px;position:relative}
+.login-hero li{display:flex;gap:12px;align-items:center;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);font-weight:600;max-width:440px}
+.login-hero li i{font-style:normal;font-size:21px}
+.login-side{display:grid;place-items:center;padding:28px;overflow:auto}
+.login-card{max-width:460px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.9);border-top:1px solid rgba(255,255,255,.9);border-radius:26px;box-shadow:0 30px 80px rgba(31,41,80,.18);padding:32px}
+[data-theme=dark] .login-card{background:rgba(24,29,48,.75);border-color:rgba(255,255,255,.08)}
+.login-card .brand{display:none}
+.demo-grid button{border-radius:14px;background:rgba(255,255,255,.7);transition:.15s}
+.demo-grid button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(234,88,12,.15)}
+@media(max-width:900px){.login-wrap{grid-template-columns:1fr}.login-hero{display:none}.login-card .brand{display:flex;justify-content:center}}
+
+/* ---------- misc polish ---------- */
+.empty{padding:44px 10px}
+.okmsg{border-radius:12px}.err{border-radius:12px}
+.pop{border-radius:18px}
+.receipt{background:#fff;color:#000}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgba(148,163,184,.4);border-radius:99px;border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.7);background-clip:content-box}
+@media print{body{background:#fff!important}.modal{background:none!important;backdrop-filter:none!important}}
+
+.nameonbill{margin:2px 0 8px;font-weight:600}
+
+/* header and its pop-ups always sit above the page content */
+.top{position:relative;z-index:50}
+.pop{z-index:90;background:var(--card-solid);background:rgba(255,255,255,.98);-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--line);box-shadow:0 24px 60px rgba(15,23,42,.28);overflow:hidden}
+[data-theme=dark] .pop{background:rgba(26,31,50,.99)}
+.pop .it{padding:12px 16px}
+.umenu{width:100%}
+.uhead{display:flex;gap:12px;align-items:center;padding:16px;background:linear-gradient(135deg,rgba(249,115,22,.14),rgba(219,39,119,.10));border-bottom:1px solid var(--line)}
+.uhead b{display:block;font-size:15px}.uhead small{display:block;color:var(--mut);font-size:12px}
+.avatar.big{width:46px;height:46px;font-size:19px;cursor:default}
+.umenu>a{display:flex;gap:12px;align-items:center;padding:11px 16px;color:var(--ink);cursor:pointer;font-weight:600;transition:.12s}
+.umenu>a i{font-style:normal;width:22px;text-align:center}
+.umenu>a:hover{background:var(--pri-l)}
+.umenu .signout{width:calc(100% - 28px);margin:10px 14px 14px;justify-content:center;padding:11px;border-color:rgba(220,38,38,.35)}
+.umenu .signout:hover{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;border-color:transparent}
+.thread{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto;margin-top:6px}
+.msg{padding:10px 12px;border-radius:14px;background:var(--bg);max-width:88%;align-self:flex-start}
+.msg.staff{background:var(--pri-l);align-self:flex-end}
+.msg small{margin-left:8px;color:var(--mut);font-size:11px}
+
+/* ---------- POS: two panes (menu + order); tables open as a small picker ---------- */
+.pos.two{grid-template-columns:minmax(0,1.25fr) minmax(400px,1fr)}
+.tgrid.small{grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:7px}
+.tgrid.small .tbl{padding:7px 4px;border-radius:12px}
+.tgrid.small .tbl b{font-size:14px}.tgrid.small .tbl small{display:block;font-size:11px}
+.pos.two .cartl{min-height:180px}
+@media(max-width:1100px){.pos.two{grid-template-columns:1fr}}
+
+/* ---------- printing: only the receipt, on the roll, never the whole app ---------- */
+@media print{
+  html,body{background:#fff!important;height:auto!important}
+  .shell,#modal,#modal2,#toast{display:none!important}
+  #printArea{display:block;position:static!important;width:100%}
+  body *{visibility:visible}
+  .receipt{width:auto!important;max-width:100%;margin:0;padding:0;font-size:12px;page-break-inside:avoid}
+}
+
+/* order-type buttons: one compact scrolling row instead of three big rows */
+.pos .chans{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.pos .chans button{white-space:nowrap;padding:5px 9px;font-size:12px;flex:none}
+
+/* side menu can be hidden on a PC (☰ in the top bar) - handy for the POS */
+.top .burger{display:grid!important}
+.kiosk .top .burger{display:none!important}
+body.nav-hidden .shell{grid-template-columns:1fr!important}
+body.nav-hidden .rail,body.nav-hidden .side{display:none!important}
+.paymodes{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0;font-size:12.5px}
+.paymodes button{border:1px solid var(--line);background:rgba(255,255,255,.7);border-radius:99px;padding:4px 11px;font-weight:700;cursor:pointer;font-size:12.5px;color:var(--ink)}
+.paymodes button.on{background:linear-gradient(135deg,#fb923c,#ea580c);color:#fff;border-color:transparent}
+
+body.noprint .pbtn{display:none!important}
+
+/* ---------- POS fills the screen: only the lists (menu items, order lines) scroll ---------- */
+#view.posview{overflow:hidden;display:flex;flex-direction:column;padding:12px 16px}
+.posview .pos{flex:1 1 auto;height:auto!important;min-height:0}
+.posview .pos>section{min-height:0}
+.posview #pl .pb{overflow-y:auto;overscroll-behavior:contain}
+.posview #pc .pb{overflow:hidden;display:flex;flex-direction:column}
+.posview #pc .cartl{flex:1 1 auto;overflow-y:auto;min-height:0;overscroll-behavior:contain}
+.posview .cats,.posview #pl .ph,.posview #pc .ph{flex:none}
+.posview #sbar .toolbar{margin-bottom:6px}
+
+/* order-type buttons: compact 4-per-row grid */
+.pos .chans{display:grid!important;grid-template-columns:repeat(4,1fr);gap:5px;overflow:visible}
+.pos .chans button{padding:5px 4px;font-size:11.5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- kitchen: big order number instead of minutes ---------- */
+.onum{font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--pri-d);line-height:1}
+[data-theme=dark] .onum{color:#fdba74}
+
+/* ---------- "order ready" pop-ups ---------- */
+#readyHost{position:fixed;top:70px;right:16px;display:flex;flex-direction:column;gap:10px;z-index:120;width:min(340px,92vw)}
+.ready-card{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:18px;background:rgba(236,253,245,.96);border:1px solid #86efac;box-shadow:0 18px 44px rgba(22,101,52,.28);animation:pop .3s cubic-bezier(.2,.9,.3,1.3)}
+[data-theme=dark] .ready-card{background:rgba(20,57,31,.96);border-color:#166534}
+.ready-card .ic{font-size:30px}.ready-card .tx{flex:1;display:flex;flex-direction:column}.ready-card .tx b{font-size:17px}.ready-card .tx span{color:var(--mut)}
+
+/* ---------- compact order panel: the item list gets all the spare room ---------- */
+.posview #pc{display:flex;flex-direction:column}
+.chead{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:10px 12px 8px;border-bottom:1px solid var(--line);flex:none}
+.chead .chsel{width:auto;padding:6px 8px;border-radius:10px;font-weight:700;font-size:13px}
+.posview #pc .cartl{flex:1 1 auto;min-height:90px;overflow-y:auto;padding:0 12px;overscroll-behavior:contain}
+.cfoot{flex:none;padding:8px 12px 10px;border-top:1px solid var(--line);background:rgba(255,255,255,.35)}
+[data-theme=dark] .cfoot{background:rgba(255,255,255,.03)}
+.crow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.crow .paysel{flex:1;padding:6px 8px;font-size:13px;border-radius:10px}
+.cfoot .sum{margin:2px 0 4px}.cfoot .sum .mini{display:block;font-size:11.5px;color:var(--mut);padding:0}
+.cfoot .sum .t{font-size:21px;margin-top:2px;padding-top:4px}
+.cfoot .printopts{margin:2px 0 6px;font-size:12px;gap:12px}
+.cbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cbtns .sm{padding:5px 8px}.cbtns .lg{padding:11px 8px;font-size:14.5px}
+.cbtns #send:last-child{grid-column:1/-1}
+
+/* ---------- small / short screens: the POS page scrolls as a whole so nothing is cut off ---------- */
+@media (max-width:1100px),(max-height:640px){
+  #view.posview{overflow-y:auto;overflow-x:hidden;display:block}
+  .posview .pos,.posview .pos.two{display:flex;flex-direction:column;height:auto!important;min-height:0;gap:12px}
+  .posview #pl{flex:none;height:62vh;min-height:300px}
+  .posview #pc{flex:none;overflow:visible}
+  .posview #pc .cartl{flex:none;max-height:38vh;min-height:130px}
+}
+@media (min-width:1101px) and (max-height:640px){
+  .posview .pos,.posview .pos.two{flex-direction:row}
+  .posview #pl{flex:1.25;height:auto;min-height:480px}
+  .posview #pc{flex:1;min-height:480px}
+}
+
+kbd{font-family:ui-monospace,Consolas,monospace;font-size:12px;padding:2px 8px;border-radius:7px;background:rgba(15,23,42,.08);border:1px solid rgba(15,23,42,.18);border-bottom-width:2px;white-space:nowrap}
+[data-theme=dark] kbd{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25)}

@@ -1,0 +1,15 @@
+# docker compose up --build   ->  open http://localhost:3000
+services:
+  backend:
+    build: ./backend
+    environment:
+      DEMO: "0"
+      ADMIN_PASSWORD: change-me-now-123
+      JWT_SECRET: put-a-long-random-text-here-at-least-32-characters
+    volumes: [ "tablebill-data:/data" ]
+  frontend:
+    build: ./frontend
+    environment: { BACKEND_URL: "http://backend:8080" }
+    ports: [ "3000:3000" ]
+    depends_on: [ backend ]
+volumes: { tablebill-data: {} }

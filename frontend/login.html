@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in | TableBill</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<div class="login-wrap">
+  <section class="login-hero">
+    <div class="brand"><span class="logo" id="logo2">🍴</span> <span id="appname2">TableBill</span></div>
+    <h2>Run your whole restaurant from one screen.</h2>
+    <p>Billing, kitchen, inventory, staff, accounts and delivery - fast, simple and always in sync.</p>
+    <ul><li><i>⚡</i> Lightning-fast POS with live kitchen display</li><li><i>📊</i> Real-time sales, stock and profit</li><li><i>🔒</i> Role-based access for every team member</li></ul>
+  </section>
+  <section class="login-side">
+  <div class="login-card">
+    <div class="brand c"><span class="logo" id="logo">🍴</span> <span id="appname">TableBill</span></div>
+
+    <!-- sign in -->
+    <form id="f" autocomplete="on">
+      <h1>Welcome back</h1>
+      <div class="sub" id="sub">Sign in to your workspace.</div>
+      <label class="f" for="u" style="margin-top:0">E-mail / Username</label>
+      <input id="u" name="username" placeholder="e.g. cashier" autocomplete="username" required autofocus>
+      <label class="f" for="p">Password</label>
+      <div class="pw">
+        <input id="p" name="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+        <button type="button" id="eye" title="Show / hide password">👁</button>
+      </div>
+      <div style="text-align:right;margin:8px 0 14px"><a href="#" id="forgot" style="font-size:13px">Forgot password?</a></div>
+      <button class="btn pri block lg" id="go">Sign in →</button>
+      <div class="err hide" id="err"></div>
+      <div class="hide" id="pk" style="margin-top:10px"><button type="button" class="btn block" id="pkbtn">🔑 Sign in with a passkey</button></div>
+
+      <div class="demo hide" id="demo">
+        <h3>✨ Explore demo accounts</h3>
+        <p>Choose a role to sign in instantly.</p>
+        <div class="demo-grid" id="dg"></div>
+      </div>
+    </form>
+
+    <!-- two-factor -->
+    <form id="f2" class="hide">
+      <h1>Two-step check</h1>
+      <div class="sub">Open your authenticator app and type the 6-digit code.</div>
+      <input id="code" inputmode="numeric" maxlength="6" placeholder="123456" style="text-align:center;font-size:24px;letter-spacing:6px" autocomplete="one-time-code">
+      <button class="btn pri block lg" style="margin-top:14px">Verify</button>
+      <div class="err hide" id="err2"></div>
+    </form>
+
+    <!-- forgot -->
+    <form id="f3" class="hide">
+      <h1>Forgot password</h1>
+      <div class="sub">Enter your username or e-mail. We will send you a reset link; if e-mail is not set up, ask your admin for one.</div>
+      <input id="fg" placeholder="Username or e-mail" required>
+      <button class="btn pri block lg" style="margin-top:14px">Send reset link</button>
+      <div class="err hide" id="err3"></div><div class="okmsg hide" id="ok3"></div>
+      <div style="text-align:center;margin-top:12px"><a href="#" class="back">← Back to sign in</a></div>
+    </form>
+
+    <!-- reset -->
+    <form id="f4" class="hide">
+      <h1>Set a new password</h1>
+      <div class="sub">Choose a password of at least 8 characters.</div>
+      <input id="np" type="password" placeholder="New password" minlength="8" required autocomplete="new-password">
+      <button class="btn pri block lg" style="margin-top:14px">Save password</button>
+      <div class="err hide" id="err4"></div>
+    </form>
+  </div>
+  </section>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const ICON={superadmin:'🛡',admin:'🔑',admin_branch:'🏪',manager:'🧑‍💼',cashier:'💵',kitchen:'👨‍🍳',waiter:'🍽',hr_officer:'🧾',hr_manager:'👥',accountant:'📒',accounting_manager:'📊',accounting_auditor:'🔍',pos_operator:'🖨'};
+const LABEL={superadmin:'Super Admin',admin:'Admin',admin_branch:'Admin Branch',manager:'Manager',cashier:'Cashier',kitchen:'Kitchen',waiter:'Waiter',hr_officer:'HR Officer',hr_manager:'HR Manager',accountant:'Accountant',accounting_manager:'Accounting Manager',accounting_auditor:'Accounting Auditor',pos_operator:'POS Operator'};
+if(localStorage.token) location.replace('/app');
+let tmp='';
+async function post(url,body){
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(d.error||'Something went wrong');
+  return d;
+}
+function done(d){localStorage.token=d.token;localStorage.user=JSON.stringify(d.user);location.replace('/app')}
+function show(id,msg){const e=$(id);e.textContent=msg;e.classList.remove('hide')}
+function panel(n){['f','f2','f3','f4'].forEach(x=>$(x).classList.toggle('hide',x!==n))}
+
+fetch('/api/config').then(r=>r.json()).then(c=>{
+  $('appname').textContent=c.restaurant||'TableBill';$('appname2').textContent=c.restaurant||'TableBill'; document.title='Sign in | '+(c.restaurant||'TableBill');
+  if(c.color) document.documentElement.style.setProperty('--pri',c.color);
+  if(c.logo&&/^(\/media\/|https?:\/\/)/i.test(c.logo)){const im=document.createElement('img');im.src=c.logo;$('logo').replaceChildren(im);$('logo2').replaceChildren(im.cloneNode())}
+  if(!c.recovery) $('forgot').classList.add('hide');
+  if(c.passkeys&&window.PublicKeyCredential) $('pk').classList.remove('hide');
+  if(c.tagline) $('sub').textContent=c.tagline;
+}).catch(()=>{});
+
+$('eye').onclick=()=>{$('p').type=$('p').type==='password'?'text':'password'};
+$('f').onsubmit=async e=>{
+  e.preventDefault();$('err').classList.add('hide');$('go').disabled=true;
+  try{
+    const d=await post('/api/auth/login',{username:$('u').value,password:$('p').value});
+    if(d.need_totp){tmp=d.tmp;panel('f2');$('code').focus()} else done(d);
+  }catch(x){show('err',x.message)}
+  $('go').disabled=false;
+};
+$('f2').onsubmit=async e=>{
+  e.preventDefault();
+  try{done(await post('/api/auth/totp',{tmp,code:$('code').value}))}catch(x){show('err2',x.message)}
+};
+$('forgot').onclick=e=>{e.preventDefault();panel('f3')};
+document.querySelectorAll('.back').forEach(a=>a.onclick=e=>{e.preventDefault();panel('f')});
+$('f3').onsubmit=async e=>{
+  e.preventDefault();$('err3').classList.add('hide');
+  try{const d=await post('/api/auth/forgot',{login:$('fg').value});show('ok3',d.message)}catch(x){show('err3',x.message)}
+};
+const rt=new URLSearchParams(location.search).get('reset');
+if(rt){panel('f4');$('f4').onsubmit=async e=>{e.preventDefault();try{await post('/api/auth/reset',{token:rt,password:$('np').value});history.replaceState({},'','/login');panel('f');show('err','');$('err').className='okmsg';$('err').textContent='Password changed - you can sign in now.'}catch(x){show('err4',x.message)}}}
+
+fetch('/api/auth/demo-accounts').then(r=>r.json()).then(list=>{
+  if(!list.length) return;
+  $('demo').classList.remove('hide');
+  $('dg').innerHTML=list.map(a=>`<button type="button" data-u="${a.username}"><i>${ICON[a.role]||'👤'}</i><div><b>${LABEL[a.role]||a.name}</b><span>${a.username}</span></div></button>`).join('');
+  $('dg').onclick=async e=>{
+    const b=e.target.closest('button');if(!b)return;
+    try{done(await post('/api/auth/demo',{username:b.dataset.u}))}catch(x){show('err',x.message)}
+  };
+}).catch(()=>{});
+</script>
+</body>
+</html>
